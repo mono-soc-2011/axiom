@@ -1948,7 +1948,6 @@ namespace Axiom.Core
 
 			if ( param != null )
 			{
-				object ni;
 				if ( param.ContainsKey( "poolSize" ) )
 				{
 					poolSize = Convert.ToInt32( param[ "poolSize" ] );
