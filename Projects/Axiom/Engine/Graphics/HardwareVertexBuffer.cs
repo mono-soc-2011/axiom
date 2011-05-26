@@ -61,7 +61,7 @@ namespace Axiom.Graphics
 
 		#region Constructors
 
-        [OgreVersion(1, 7, "Passing VertexDeclaration rather than vertex size")]
+        [OgreVersion(1, 7, 2790, "Passing VertexDeclaration rather than vertex size")]
 		public HardwareVertexBuffer( HardwareBufferManagerBase manager, VertexDeclaration vertexDeclaration, int numVertices, 
              BufferUsage usage, bool useSystemMemory, bool useShadowBuffer )
 			: base( usage, useSystemMemory, useShadowBuffer )
@@ -126,10 +126,10 @@ namespace Axiom.Graphics
 
         #region IsInstanceData
 
-        [OgreVersion(1, 7)]
+        [OgreVersion(1, 7, 2790)]
 	    protected bool isInstanceData;
 
-        [OgreVersion(1, 7)]
+        [OgreVersion(1, 7, 2790)]
         public bool IsInstanceData
         {
             get
@@ -153,10 +153,10 @@ namespace Axiom.Graphics
 
         #region InstanceDataStepRate
 
-        [OgreVersion(1, 7)]
+        [OgreVersion(1, 7, 2790)]
         protected int instanceDataStepRate;
 
-        [OgreVersion(1, 7)]
+        [OgreVersion(1, 7, 2790)]
         public int InstanceDataStepRate
         {
             get
