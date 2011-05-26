@@ -38,6 +38,7 @@ using Axiom.Core;
 using Axiom.Graphics;
 using Axiom.Math;
 using Axiom.Scripting.Compiler.AST;
+using System;
 
 #endregion Namespace Declarations
 
@@ -1402,12 +1403,12 @@ namespace Axiom.Scripting.Compiler
 
 													case Keywords.ID_DIRECTIONAL:
 														//TODO
-														//mPass->setIteratePerLight(true, true, Light::LT_DIRECTIONAL);
+														//_pass.SetIteratePerLight(true, true, LightType.Directional );
 														break;
 
 													case Keywords.ID_SPOT:
 														//TODO
-														//mPass->setIteratePerLight(true, true, Light::LT_SPOTLIGHT);
+                                                        //_pass.SetIteratePerLight(true, true, LightType.Spotlight );
 														break;
 
 													default:
@@ -1419,14 +1420,14 @@ namespace Axiom.Scripting.Compiler
 											else
 											{
 												//TODO
-												//mPass->setIteratePerLight(true, false);
+                                                //_pass.SetIteratePerLight(true, false);
 											}
 
 										}
 										else if ( atom.IsNumber )
 										{
 											//TODO
-											//mPass->setPassIterationCount(Ogre::StringConverter::parseInt(atom->value));
+											_pass.IterationCount = Int32.Parse( atom.Value );
 
 											AbstractNode i1 = getNodeAt( prop.Values, 1 );
 											if ( i1 != null && i1 is AtomAbstractNode )

@@ -377,6 +377,7 @@ namespace Axiom.Core
 
 		#endregion VisibilityMask Property
 
+
         #region OrientationMode
 
 #if AXIOM_NO_VIEWPORT_ORIENTATIONMODE
@@ -446,6 +447,7 @@ namespace Axiom.Core
         }
 
         #endregion
+
 
 		#region RenderQueueSequence Properties Property
 
