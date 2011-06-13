@@ -7,48 +7,7 @@ namespace Axiom.Graphics
 {
     partial class GpuProgramParameters
     {
-        [OgreVersion(1, 7, 2790)]
-        public class GpuLogicalIndexUse
-        {
-            /// <summary>
-            /// physicalIndex;
-            /// </summary>
-            [OgreVersion(1, 7, 2790)]
-            public int PhysicalIndex;
-
-            /// <summary>
-            /// Current physical size allocation
-            /// </summary>
-            [OgreVersion(1, 7, 2790)]
-            public int CurrentSize;
-
-            /// <summary>
-            /// How the contents of this slot vary
-            /// </summary>
-            [OgreVersion(1, 7, 2790)]
-            public GpuParamVariability Variability;
-
-            [OgreVersion(1, 7, 2790)]
-            public GpuLogicalIndexUse()
-            {
-                PhysicalIndex = 99999;
-                CurrentSize = 0;
-                Variability = GpuParamVariability.Global;
-            }
-
-            [OgreVersion(1, 7, 2790)]
-            public GpuLogicalIndexUse(int bufIdx, int curSz, GpuParamVariability v)
-            {
-                PhysicalIndex = bufIdx;
-                CurrentSize = curSz;
-                Variability = v;
-            }
-        }
-
-        [OgreVersion(1, 7, 2790)]
-        public class GpuLogicalIndexUseMap: Dictionary<int, GpuLogicalIndexUse>
-        {
-        }
+        
 
         [OgreVersion(1, 7, 2790)]
         public class GpuLogicalBufferStruct
