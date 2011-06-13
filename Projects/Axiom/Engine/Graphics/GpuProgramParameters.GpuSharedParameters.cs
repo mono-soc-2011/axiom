@@ -79,14 +79,14 @@ namespace Axiom.Graphics
             #region FloatConstants
 
             [OgreVersion(1, 7, 2790)]
-			protected FloatConstantList FloatConstants = new FloatConstantList();
+			protected internal FloatConstantList FloatConstants = new FloatConstantList();
 
             #endregion
 
             #region IntConstants
 
             [OgreVersion(1, 7, 2790)]
-            protected IntConstantList IntConstants = new IntConstantList();
+            protected internal IntConstantList IntConstants = new IntConstantList();
 
             #endregion
 
