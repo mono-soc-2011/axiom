@@ -143,7 +143,7 @@ namespace Axiom.Graphics
             }
 
 
-            #region unsupported operations
+            #region unimplemented operations
 
             public bool Contains(T item)
             {
