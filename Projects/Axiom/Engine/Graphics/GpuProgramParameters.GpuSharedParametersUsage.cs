@@ -246,5 +246,9 @@ namespace Axiom.Graphics
                 }
             }
         }
+
+        public class GpuSharedParametersUsageList : List<GpuSharedParametersUsage>
+        {
+        }
     }
 }
