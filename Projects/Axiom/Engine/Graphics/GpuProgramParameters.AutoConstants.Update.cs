@@ -5,6 +5,8 @@ using System.Text;
 using Axiom.Core;
 using Axiom.Math;
 
+// TODO: InverseTransposeWorldMatrix -> ok
+
 namespace Axiom.Graphics
 {
     public partial class GpuProgramParameters
@@ -24,6 +26,10 @@ namespace Axiom.Graphics
                 return; 
 
             PassIterationNumberIndex = int.MaxValue;
+
+            Matrix3 m3;
+            Vector4 vec4;
+            Vector3 vec3;
 
             // loop through and update all constants based on their type
             foreach ( var entry in autoConstants )
@@ -299,79 +305,82 @@ namespace Axiom.Graphics
                     case AutoConstantType.SpotLightViewProjMatrix:
                         WriteRawConstant(entry.PhysicalIndex, source.GetSpotlightWorldViewProjMatrix(entry.Data), entry.ElementCount);
                         break;
-
+                        */
 
                     case AutoConstantType.LightPositionObjectSpace:
 					vec4 = source.GetLightAs4DVector(entry.Data);
-					vec3 = Vector3(vec4.x, vec4.y, vec4.z);
+					vec3 = new Vector3(vec4.x, vec4.y, vec4.z);
 					if( vec4.w > 0.0f )
 					{
 						// point light
-						vec3 = source->getInverseWorldMatrix().transformAffine(vec3);
+						vec3 = source.InverseWorldMatrix.TransformAffine(vec3);
 					}
 					else
 					{
 						// directional light
 						// We need the inverse of the inverse transpose 
-						source->getInverseTransposeWorldMatrix().inverse().extract3x3Matrix(m3);
-						vec3 = (m3 * vec3).normalisedCopy();
+						source.InverseTransposeWorldMatrix.Inverse().Extract3x3Matrix(out m3);
+						vec3 = (m3 * vec3);
+					    vec3.Normalize();
 					}
 					WriteRawConstant(entry.PhysicalIndex, 
-						Vector4(vec3.x, vec3.y, vec3.z, vec4.w),
+						new Vector4(vec3.x, vec3.y, vec3.z, vec4.w),
 						entry.ElementCount);
 					break;
+                        /*
 				case AutoConstantType.LightDirectionObjectSpace:
 					// We need the inverse of the inverse transpose 
-					source->getInverseTransposeWorldMatrix().inverse().extract3x3Matrix(m3);
-					vec3 = m3 * source->getLightDirection(entry.Data);
-					vec3.normalise();
+					source.InverseTransposeWorldMatrix.Inverse().Extract3x3Matrix(out m3);
+					vec3 = m3 * source.GetLightDirection(entry.Data);
+					vec3.Normalize();
 					// Set as 4D vector for compatibility
-					WriteRawConstant(entry.PhysicalIndex, Vector4(vec3.x, vec3.y, vec3.z, 0.0f), entry.ElementCount);
+					WriteRawConstant(entry.PhysicalIndex, new Vector4(vec3.x, vec3.y, vec3.z, 0.0f), entry.ElementCount);
 					break;
 				case AutoConstantType.LightDistanceObjectSpace:
-					vec3 = source->getInverseWorldMatrix().transformAffine(source->getLightPosition(entry.Data));
-					WriteRawConstant(entry.PhysicalIndex, vec3.length());
+					vec3 = source.InverseWorldMatrix.TransformAffine(source.GetLightPosition(entry.Data));
+					WriteRawConstant(entry.PhysicalIndex, vec3.Length);
 					break;
+                         */
 				case AutoConstantType.LightPositionObjectSpaceArray:
 					// We need the inverse of the inverse transpose 
-					source->getInverseTransposeWorldMatrix().inverse().extract3x3Matrix(m3);
-					for (size_t l = 0; l < entry.Data; ++l)
+					source.InverseTransposeWorldMatrix.Inverse().Extract3x3Matrix(out m3);
+					for (var l = 0; l < entry.Data; ++l)
 					{
-						vec4 = source->getLightAs4DVector(l);
-						vec3 = Vector3(vec4.x, vec4.y, vec4.z);
+						vec4 = source.GetLightAs4DVector(l);
+						vec3 = new Vector3(vec4.x, vec4.y, vec4.z);
 						if( vec4.w > 0.0f )
 						{
 							// point light
-							vec3 = source->getInverseWorldMatrix().transformAffine(vec3);
+							vec3 = source.InverseWorldMatrix.TransformAffine(vec3);
 						}
 						else
 						{
 							// directional light
-							vec3 = (m3 * vec3).normalisedCopy();
+							vec3 = (m3 * vec3);
+                            vec3.Normalize();
 						}
 						WriteRawConstant(entry.PhysicalIndex + l*entry.ElementCount, 
-							Vector4(vec3.x, vec3.y, vec3.z, vec4.w),
+							new Vector4(vec3.x, vec3.y, vec3.z, vec4.w),
 							entry.ElementCount);
 					}
 					break;
-
+                        /*
 				case AutoConstantType.LightDirectionObjectSpaceArray:
 					// We need the inverse of the inverse transpose 
-					source->getInverseTransposeWorldMatrix().inverse().extract3x3Matrix(m3);
-					for (size_t l = 0; l < entry.Data; ++l)
+					source.InverseTransposeWorldMatrix.Inverse().Extract3x3Matrix(out m3);
+					for (var l = 0; l < entry.Data; ++l)
 					{
-						vec3 = m3 * source->getLightDirection(l);
-						vec3.normalise();
+						vec3 = m3 * source.GetLightDirection(l);
+						vec3.Normalize();
 						WriteRawConstant(entry.PhysicalIndex + l*entry.ElementCount, 
-							Vector4(vec3.x, vec3.y, vec3.z, 0.0f), entry.ElementCount); 
+							new Vector4(vec3.x, vec3.y, vec3.z, 0.0f), entry.ElementCount); 
 					}
 					break;
-
 				case AutoConstantType.LightDistanceObjectSpaceArray:
-					for (size_t l = 0; l < entry.Data; ++l)
+					for (var l = 0; l < entry.Data; ++l)
 					{
-						vec3 = source->getInverseWorldMatrix().transformAffine(source->getLightPosition(l));
-						WriteRawConstant(entry.PhysicalIndex + l*entry.ElementCount, vec3.length());
+						vec3 = source.InverseWorldMatrix.TransformAffine(source.GetLightPosition(l));
+						WriteRawConstant(entry.PhysicalIndex + l*entry.ElementCount, vec3.Length);
 					}
 					break;*/
 
@@ -442,11 +451,12 @@ namespace Axiom.Graphics
                     case AutoConstantType.LODCameraPositionObjectSpace:
                         WriteRawConstant( entry.PhysicalIndex, source.LodCameraPositionObjectSpace, entry.ElementCount );
                         break;
-
+                        */
                     case AutoConstantType.Custom:
                     case AutoConstantType.AnimationParametric:
                         source.CurrentRenderable.UpdateCustomGpuParameter( entry, this );
                         break;
+                        /*
                     case AutoConstantType.LightCustom:
                         source.UpdateLightCustomGpuParameter( entry, this );
                         break;
